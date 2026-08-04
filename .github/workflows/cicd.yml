@@ -33,7 +33,17 @@ jobs:
         echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
         sudo apt-get update -y
         sudo apt-get install trivy -y
-        
+
+    - name: Resolve Maven dependencies
+      run: mvn dependency:resolve
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+       path: ~/.m2
+       key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+       restore-keys: |
+          ${{ runner.os }}-maven-
+
     - name: Trivy FS Scan
       run: trivy fs --skip-version-check --format table -o fs-report.json .
 
