@@ -20,7 +20,6 @@ jobs:
       run: mvn -B package --file pom.xml
 
   Security-check:
-
     runs-on: self-hosted
     needs: compile
 
@@ -51,7 +50,7 @@ jobs:
 
   test:
     runs-on: self-hosted
-    
+    needs: Security-check
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17
