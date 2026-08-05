@@ -25,13 +25,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Trivy installation
-      run: | 
-        sudo apt-get -y install wget gnupg
-        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
-        echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
-        sudo apt-get update -y
-        sudo apt-get install trivy -y
+    
     
     - name: Verify Trivy
       run: trivy --version
@@ -39,13 +33,7 @@ jobs:
     - name: Resolve Maven dependencies
       run: mvn dependency:resolve
       
-    - name: Cache Maven dependencies
-      uses: actions/cache@v3
-      with:
-       path: ~/.m2
-       key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-       restore-keys: |
-          ${{ runner.os }}-maven-
+    
 
     - name: Trivy FS Scan
       run: trivy fs --skip-version-check --format table -o fs-report.json .
