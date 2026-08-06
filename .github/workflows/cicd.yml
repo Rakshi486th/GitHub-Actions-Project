@@ -111,7 +111,7 @@ jobs:
 
   build_docker_image_and_push:
     runs-on: self-hosted
-    needs: test
+    needs: build_sonar_scan
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK 17
