@@ -132,8 +132,11 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v7
       with:
+          context: .
           push: true
-          tags: rakshi1/bank_app:latest    
+          tags: rakshi1/bank_app:latest  
+    - name: Print Dockerfile
+      run: cat Dockerfile      
   
   
           
